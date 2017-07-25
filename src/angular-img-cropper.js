@@ -14,7 +14,11 @@ angular.module('angular-img-cropper', []).directive("imageCropper", ['$document'
         restrict: "A",
         link: function (scope, element, attrs) {
           scope.$on('$destroy', function() {
-            console.info('going to destroy scope:', scope);
+            angular.element(window)
+              .off('mousemove.angular-img-cropper mouseup.angular-img-cropper touchmove.angular-img-cropper touchend.angular-img-cropper');
+
+            angular.element(element[0])
+              .off('mousedown.angular-img-cropper touchstart.angular-img-cropper');
           });
 
             var crop;
