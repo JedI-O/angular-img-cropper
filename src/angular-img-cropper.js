@@ -13,6 +13,10 @@ angular.module('angular-img-cropper', []).directive("imageCropper", ['$document'
         },
         restrict: "A",
         link: function (scope, element, attrs) {
+          scope.$on('$destroy', function() {
+            console.info('going to destroy scope:', scope);
+          });
+
             var crop;
             var __extends = __extends || function (d, b) {
                     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -379,6 +383,13 @@ angular.module('angular-img-cropper', []).directive("imageCropper", ['$document'
                     this.draw(this.ctx);
                     this.croppedImage = new Image();
                     this.currentlyInteracting = false;
+
+                    angular.element(window)
+                      .off('mousemove.angular-img-cropper mouseup.angular-img-cropper touchmove.angular-img-cropper touchend.angular-img-cropper')
+                      .on('mousemove.angular-img-cropper', this.onMouseMove.bind(this))
+                      .on('mouseup.angular-img-cropper', this.onMouseUp.bind(this))
+                      .on('touchmove.angular-img-cropper', this.onTouchMove.bind(this))
+                      .on('touchend.angular-img-cropper', this.onTouchEnd.bind(this));
 
                     angular.element(canvas)
                       .off('mousedown.angular-img-cropper touchstart.angular-img-cropper')
